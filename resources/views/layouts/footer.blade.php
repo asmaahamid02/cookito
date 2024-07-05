@@ -1,11 +1,11 @@
-<footer class="bg-gray-800 dark:bg-gray-900 text-gray-200 dark:text-gray-400">
+<footer class="bg-gray-100 dark:bg-gray-900 text-gray-500 dark:text-gray-400">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
             <!-- About Us -->
             <div>
                 <div>
-                    <h3 class="text-lg font-semibold">About Us</h3>
-                    <p class="mt-2 text-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.</p>
+                    <h3 class="text-lg font-semibold text-gray-600 dark:text-gray-500">About Us</h3>
+                    <p class="mt-2 text-sm ">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptates.</p>
                 </div>
                 <div class="mt-4">
                     <x-application-logo class="!h-20" />
@@ -21,9 +21,6 @@
                     </x-nav-link>
                     <x-nav-link class="max-w-fit" :href="route('recipes')" :active="request()->routeIs('recipes')">
                         {{ __('Recipes') }}
-                    </x-nav-link>
-                    <x-nav-link class="max-w-fit" :href="route('about')" :active="request()->routeIs('about')">
-                        {{ __('About') }}
                     </x-nav-link>
                     @auth
                     <x-nav-link class="max-w-fit" :href="route('profile.edit')" :active="request()->routeIs('profile.edit')">
@@ -73,9 +70,9 @@
     </div>
 
     <!-- Footer Bottom -->
-    <div class="bg-gray-900 dark:bg-gray-800 py-4">
+    <div class="bg-gray-200 dark:bg-gray-800 py-4">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <p class="text-sm text-center text-gray-200 dark:text-gray-400">&copy; 2021 <a href="{{ route('dashboard') }}" class="text-amber-500 dark:text-amber-400 hover:underline">Cookito</a>. All rights reserved.
+            <p class="text-sm text-center text-gray-600 dark:text-gray-400">&copy; 2021 <a href="{{ route('dashboard') }}" class="text-amber-500 dark:text-amber-400 hover:underline">Cookito</a>. All rights reserved.
             </p>
         </div>
     </div>

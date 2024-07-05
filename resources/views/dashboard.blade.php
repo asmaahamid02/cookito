@@ -27,7 +27,7 @@
     <section class="py-20 bg-gray-100 dark:bg-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center mb-8">
-                <h2 class="text-3xl font-extrabold text-gray-900 dark:text-gray-100">Popular Categories</h2>
+                <h2 class="text-3xl md:text-5xl font-extrabold text-gray-900 dark:text-gray-100">Popular Categories</h2>
                 <a href="{{ route('categories') }}" class="text-amber-600 dark:text-amber-400 text-xs hover:underline">View all
                 </a>
             </div>
@@ -44,7 +44,7 @@
     <section class="py-12 bg-gray-200 dark:bg-gray-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center mb-8">
-                <h2 class="text-3xl font-extrabold text-gray-900 dark:text-gray-100">Latest Recipes</h2>
+                <h2 class="text-3xl md:text-5xl font-extrabold text-gray-900 dark:text-gray-100">Latest Recipes</h2>
                 <a href="{{ route('recipes') }}" class="text-amber-600 dark:text-amber-400 text-xs hover:underline">View all
                 </a>
             </div>
