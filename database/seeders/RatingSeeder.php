@@ -14,7 +14,7 @@ class RatingSeeder extends Seeder
      */
     public function run(): void
     {
-        $users = User::byRole('user')->get();
+        $users = User::whereRole('user')->get();
         $recipes = Recipe::all();
 
 

@@ -15,28 +15,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        DB::connection()->setSchemaGrammar(new class extends PostgresGrammar
-        {
-            protected function typeText_array(Fluent $column)
-            {
-                return 'text[]';
-            }
-        });
-
         Schema::create('recipes', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('title');
+            $table->string('title')->index();
             $table->text('description');
             $table->integer('prep_time'); //minutes
             $table->integer('cook_time'); //minutes
             $table->integer('servings');
             $table->integer('calories')->nullable();
             $table->integer('protein')->nullable(); //grams
-            $table->addColumn('text_array', 'tags')->nullable(); //array
             $table->string('image')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
+            $table->index(['created_at']);
         });
 
         Schema::create('ingredients', function (Blueprint $table) {
@@ -47,6 +39,7 @@ return new class extends Migration
             $table->string('unit');
             $table->foreign('recipe_id')->references('id')->on('recipes')->onDelete('cascade');
             $table->unique(['recipe_id', 'name']);
+            $table->index(['recipe_id', 'name']);
             $table->timestamps();
         });
 
@@ -57,6 +50,7 @@ return new class extends Migration
             $table->text('description');
             $table->foreign('recipe_id')->references('id')->on('recipes')->onDelete('cascade');
             $table->unique(['recipe_id', 'step_number']);
+            $table->index(['recipe_id', 'description']);
             $table->timestamps();
         });
     }

@@ -45,6 +45,7 @@ class User extends Authenticatable
         ];
     }
 
+    ########### Relationships ###########
     public function recipes()
     {
         return $this->hasMany(Recipe::class);
@@ -65,13 +66,13 @@ class User extends Authenticatable
         return $this->hasMany(Rating::class);
     }
 
-    public function scopeByRole($query, string $role)
+    ########### Accessors ###########
+    public function scopeWhereRole($query, string $role)
     {
-        return $query->whereHas('roles', function ($query) use ($role) {
-            $query->where('name', $role);
-        });
+        return $query->whereRelation('roles', 'name', $role);
     }
 
+    ########### Methods ###########
     public function hasRole(string $role): bool
     {
         return $this->roles->contains('name', $role);
@@ -93,11 +94,7 @@ class User extends Authenticatable
 
     public function toggleRole(string $role): void
     { //if the user has the role, remove it, otherwise assign it
-        if ($this->hasRole($role)) {
-            $this->removeRole($role);
-        } else {
-            $this->assignRole($role);
-        }
+        $this->roles()->toggle(Role::where('name', $role)->first());
     }
 
     public function isAuthor(): bool

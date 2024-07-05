@@ -13,6 +13,7 @@ class Role extends Model
         'name',
     ];
 
+    ########### Relationships ###########
     public function users()
     {
         return $this->belongsToMany(User::class)->withTimestamps();
