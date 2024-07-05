@@ -5,10 +5,11 @@ namespace App\Models;
 use App\Helpers\DateHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class Recipe extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
 
     protected $fillable = [
         'title',
@@ -31,6 +32,33 @@ class Recipe extends Model
         'average_rating',
     ];
 
+    ########### Searchable ###########
+    public function searchableAs(): string
+    {
+        return 'recipes';
+    }
+
+    public function toSearchableArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'description' => $this->description,
+            'tags' => $this->tags,
+            'user' => $this->user->name,
+            'categories' => $this->categories ? $this->categories->map(function ($category) {
+                return $category->name;
+            })->toArray() : [],
+            'ingredients' => $this->ingredients ? $this->ingredients->map(function ($ingredient) {
+                return $ingredient->name ?? '';
+            })->toArray() : [],
+            'instructions' => $this->instructions ? $this->instructions->map(function ($instruction) {
+                return $instruction->description ?? '';
+            })->toArray() : [],
+        ];
+    }
+
+    ########### Relationships ###########
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -61,6 +89,7 @@ class Recipe extends Model
         return $this->belongsTo(Instruction::class);
     }
 
+    ########### Accessors ###########
     public function getPrepTimeAttribute($value)
     {
         return DateHelper::formatTime($value);
@@ -76,5 +105,13 @@ class Recipe extends Model
         $average = $this->ratings()->avg('rating');
         $average = $average ? ceil($average) : 0;
         return $average > 5 ? 5 : $average;
+    }
+
+    ########### Scopes ###########
+    public function scopeWhereCategory($query, $category)
+    {
+        return $query->whereHas('categories', function ($query) use ($category) {
+            $query->where('name', 'iLIKE', "%$category%");
+        });
     }
 }
