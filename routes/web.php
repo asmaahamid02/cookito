@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\{
+    CategoryController,
     HomeController,
     ProfileController,
     RecipeController
@@ -9,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('dashboard');
 
+Route::get('/recipes/search', [RecipeController::class, 'search'])->name('recipes.search');
 Route::resource('recipes', RecipeController::class)->names([
     'index' => 'recipes',
     'show' => 'recipes.show',
@@ -19,9 +21,17 @@ Route::resource('recipes', RecipeController::class)->names([
     'destroy' => 'recipes.destroy',
 ]);
 
-Route::get('/categories', function () {
-    return view('categories.index');
-})->name('categories');
+//search
+
+Route::resource('categories', CategoryController::class)->names([
+    'index' => 'categories',
+    'show' => 'categories.show',
+    'create' => 'categories.create',
+    'store' => 'categories.store',
+    'edit' => 'categories.edit',
+    'update' => 'categories.update',
+    'destroy' => 'categories.destroy',
+]);
 
 
 Route::middleware('auth')->group(function () {
