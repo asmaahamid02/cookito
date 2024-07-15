@@ -18,7 +18,7 @@
 
 <body class="font-sans antialiased">
     <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-        @include('layouts.navigation')
+        @include('partials.navigation')
 
         <!-- Page Heading -->
         @isset($header)
@@ -33,10 +33,10 @@
         <main>
             {{ $slot }}
 
-            @include('layouts.about')
+            @include('partials.about')
         </main>
 
-        @include('layouts.footer')
+        @include('partials.footer')
     </div>
 </body>
 
