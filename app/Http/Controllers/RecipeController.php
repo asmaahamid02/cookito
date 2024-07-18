@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Recipe;
 use App\Http\Requests\StoreRecipeRequest;
 use App\Http\Requests\UpdateRecipeRequest;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class RecipeController extends Controller
 {
@@ -33,7 +36,8 @@ class RecipeController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::orderBy('name')->get();
+        return view('recipes.create')->with('categories', $categories);
     }
 
     /**
@@ -41,7 +45,64 @@ class RecipeController extends Controller
      */
     public function store(StoreRecipeRequest $request)
     {
-        //
+        $request->validated();
+
+        //check if the user has author role
+        if (!auth()->user()->hasRole('author')) {
+            Log::channel('recipe')->error('User does not have author role');
+
+            if ($request->is('api/*')) {
+                return response()->json(['message' => 'You do not have permission to create a recipe'], 403);
+            }
+
+            return back()->with('error', 'You do not have permission to create a recipe');
+        }
+
+        Log::channel('recipe')->info('#### Creating recipe ####');
+
+        try {
+            DB::transaction(function () use ($request) {
+                $recipe = new Recipe();
+                $recipe->fill($request->except('image', 'ingredients', 'instructions', 'categories'));
+                $recipe->user_id = auth()->id();
+
+                $recipe->save();
+
+                Log::channel('recipe')->info('Recipe record created');
+
+                //add image to the storage
+                if ($request->has('image')) {
+                    $folder = 'images/recipes/' . $recipe->id;
+                    $recipe->image = $request->file('image')->store($folder, 'public');
+                    $recipe->save();
+
+                    Log::channel('recipe')->info('Recipe image added', ['recipe_image' => $recipe->image]);
+                }
+
+
+                $recipe->categories()->attach($request->categories);
+
+                $recipe->ingredients()->createMany($request->ingredients);
+                $recipe->instructions()->createMany($request->instructions);
+            });
+
+            Log::channel('recipe')->info('#### Recipe created successfully ####');
+        } catch (\Exception $e) {
+            Log::channel('recipe')->error('Error creating recipe', ['error' => $e->getMessage()]);
+
+            if ($request->is('api/*')) {
+                return response()->json(['message' => 'Error creating recipe. ERROR: ' . $e->getMessage()], 500);
+            }
+
+            return back()->with('error', 'Error creating recipe. ERROR: ' . $e->getMessage());
+        }
+
+        //return response based on the request
+        if ($request->is('api/*')) {
+            return response()->json(['message' => 'Recipe created successfully'], 201);
+        }
+
+        return back()->with('success', 'Recipe created successfully');
     }
 
     /**

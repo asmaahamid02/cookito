@@ -10,7 +10,7 @@ class Instruction extends Model
     use HasFactory;
 
     protected $fillable = [
-        'step',
+        'step_number',
         'description',
     ];
 
