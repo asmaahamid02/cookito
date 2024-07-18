@@ -11,15 +11,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('dashboard');
 
 Route::get('/recipes/search', [RecipeController::class, 'search'])->name('recipes.search');
-Route::resource('recipes', RecipeController::class)->names([
+Route::resource('recipes', RecipeController::class)->only(['index', 'show'])->names([
     'index' => 'recipes',
     'show' => 'recipes.show',
-    'create' => 'recipes.create',
-    'store' => 'recipes.store',
-    'edit' => 'recipes.edit',
-    'update' => 'recipes.update',
-    'destroy' => 'recipes.destroy',
-]);
+])
+    //change recipe to id
+    ->parameters([
+        'recipes' => 'id',
+    ]);
 
 //search
 
@@ -34,10 +33,20 @@ Route::resource('categories', CategoryController::class)->names([
 ]);
 
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::resource('recipes', RecipeController::class)->except(['index', 'show'])->names([
+        'create' => 'recipes.create',
+        'store' => 'recipes.store',
+        'edit' => 'recipes.edit',
+        'update' => 'recipes.update',
+        'destroy' => 'recipes.destroy',
+    ])->parameters([
+        'recipes' => 'id',
+    ]);
 });
 
 require __DIR__ . '/auth.php';
