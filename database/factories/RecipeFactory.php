@@ -34,6 +34,7 @@ class RecipeFactory extends Factory
             'servings' => fake()->numberBetween(1, 12),
             'calories' => fake()->numberBetween(300, 1500),
             'protein' => fake()->numberBetween(5, 50),
+            'carbs' => fake()->numberBetween(5, 100),
             //get random image from storage/recipes
             'image' => $files[fake()->numberBetween(0, count($files) - 1)]->getFilename(),
         ];

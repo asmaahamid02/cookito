@@ -20,11 +20,12 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('title')->index();
             $table->text('description');
-            $table->integer('prep_time'); //minutes
-            $table->integer('cook_time'); //minutes
+            $table->decimal('prep_time'); //minutes
+            $table->decimal('cook_time'); //minutes
             $table->integer('servings');
-            $table->integer('calories')->nullable();
-            $table->integer('protein')->nullable(); //grams
+            $table->decimal('calories')->nullable();
+            $table->decimal('protein')->nullable(); //grams
+            $table->decimal('carbs')->nullable(); //grams
             $table->string('image')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();

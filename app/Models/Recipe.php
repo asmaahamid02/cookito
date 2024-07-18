@@ -19,13 +19,9 @@ class Recipe extends Model
         'servings',
         'calories',
         'protein',
-        'tags',
+        'carbs',
         'image',
         'user_id',
-    ];
-
-    protected $casts = [
-        'tags' => 'array',
     ];
 
     protected $appends = [
@@ -44,7 +40,6 @@ class Recipe extends Model
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
-            'tags' => $this->tags,
             'user' => $this->user->name,
             'categories' => $this->categories ? $this->categories->map(function ($category) {
                 return $category->name;
@@ -81,12 +76,12 @@ class Recipe extends Model
 
     public function ingredients()
     {
-        return $this->belongsTo(Ingredient::class);
+        return $this->hasMany(Ingredient::class);
     }
 
     public function instructions()
     {
-        return $this->belongsTo(Instruction::class);
+        return $this->hasMany(Instruction::class);
     }
 
     ########### Accessors ###########
@@ -106,6 +101,7 @@ class Recipe extends Model
         $average = $average ? ceil($average) : 0;
         return $average > 5 ? 5 : $average;
     }
+
 
     ########### Scopes ###########
     public function scopeWhereCategory($query, $category)
