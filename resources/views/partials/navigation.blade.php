@@ -47,7 +47,9 @@
                 </x-icon-button>
 
                 <x-primary-button class="ms-3 hidden sm:inline-flex">
-                    {{ __('Submit recipe') }}
+                    <a href="{{ route('recipes.create') }}">
+                        {{ __('Submit recipe') }}
+                    </a>
                 </x-primary-button>
 
                 <!-- Toggle theme -->
@@ -115,9 +117,8 @@
     </div>
 
 </nav>
-<div class="h-2 w-full bg-white dark:bg-gray-800 block lg:hidden"></div>
 <!-- Search input for small screens -->
-<div class="hidden lg:hidden bg-white dark:bg-gray-800" id="small-screen-search-form">
+<div class="hidden lg:hidden py-2 bg-white dark:bg-gray-800" id="small-screen-search-form">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <x-search-form />
     </div>

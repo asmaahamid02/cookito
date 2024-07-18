@@ -11,7 +11,9 @@
                 </p>
                 <div class="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-8 w-full justify-center">
                     <x-secondary-button class="w-full sm:w-auto justify-center sm:px-8">
-                        {{ __('Submit recipe') }}
+                        <a href="{{ route('recipes.create') }}">
+                            {{ __('Submit recipe') }}
+                        </a>
                     </x-secondary-button>
                     <x-primary-button class="w-full sm:w-auto justify-center sm:px-8">
                         <a href="{{ route('recipes') }}">
