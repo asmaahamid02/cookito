@@ -1,4 +1,4 @@
-<form class="relative flex items-center overflow-hidden rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900" method="GET" action="{{ route('recipes.search') }}">
+<form class="m-0 relative flex items-center overflow-hidden rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900" method="GET" action="{{ route('recipes.search') }}">
     @csrf
     <button type="reset" class="p-2 rounded-r-md font-semibold text-xs bg-transparent text-gray-500 dark:text-gray-400 focus:outline-none transition ease-in-out duration-150" aria-label="Close search form">
         <x-heroicon-o-x-mark class="h-4 w-4" />

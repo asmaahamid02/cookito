@@ -9,7 +9,7 @@ $classes = [
 ][$type];
 @endphp
 
-<div {{ $attributes->merge(['class' => "flex items-center p-4 mb-4 text-sm rounded-lg border-l-4 {$classes}"]) }}>
+<div {{ $attributes->merge(['class' => "flex items-center p-4 mb-4 text-sm rounded-lg border border-l-4 {$classes}"]) }}>
     @if ($type === 'success')
     <x-heroicon-o-check-circle class="w-4 h-4 me-3" />
     @elseif ($type === 'error')
