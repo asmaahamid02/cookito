@@ -4,7 +4,7 @@
         <div class="hero-container bg-black bg-opacity-80 w-full h-full">
             <div class="max-w-7xl px-4 sm:px-6 lg:px-8 py-40 sm:py-60 mx-auto flex flex-col justify-center items-center">
                 <h1 class="text-4xl font-extrabold text-gray-100 sm:text-5xl md:text-7xl text-center w-full sm:max-w-[60rem]">
-                    Discover Simple, Delicious and <span class="text-amber-500 dark:text-amber-400">Fast Recipes</span>
+                    Discover Simple, Delicious and <span class="text-amber-600 dark:text-amber-400">Fast Recipes</span>
                 </h1>
                 <p class="mt-4 text-lg sm:text-xl text-gray-400 text-center">
                     A recipe is soulless. The essence of recipe lies in the hands of the cook who prepares it.

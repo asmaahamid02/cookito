@@ -72,7 +72,7 @@
     <!-- Footer Bottom -->
     <div class="bg-gray-200 dark:bg-gray-800 py-4">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <p class="text-sm text-center text-gray-600 dark:text-gray-400">&copy; 2021 <a href="{{ route('dashboard') }}" class="text-amber-500 dark:text-amber-400 hover:underline">Cookito</a>. All rights reserved.
+            <p class="text-sm text-center text-gray-600 dark:text-gray-400">&copy; 2021 <a href="{{ route('dashboard') }}" class="text-amber-600 dark:text-amber-400 hover:underline">Cookito</a>. All rights reserved.
             </p>
         </div>
     </div>

@@ -25,17 +25,17 @@
     //handle file drag and drop
     $(`#${id}-label`).on('dragover', function(e) {
         e.preventDefault()
-        $(this).addClass('border-amber-400 dark:border-amber-500')
+        $(this).addClass('border-amber-600 dark:border-amber-400')
     })
 
     $(`#${id}-label`).on('dragleave', function(e) {
         e.preventDefault()
-        $(this).removeClass('border-amber-400 dark:border-amber-500')
+        $(this).removeClass('border-amber-600 dark:border-amber-400')
     })
 
     $(`#${id}-label`).on('drop', function(e) {
         e.preventDefault()
-        $(this).removeClass('border-amber-400 dark:border-amber-500')
+        $(this).removeClass('border-amber-600 dark:border-amber-400')
 
         $(`#${id}`).prop('files', e.originalEvent.dataTransfer.files)
 
