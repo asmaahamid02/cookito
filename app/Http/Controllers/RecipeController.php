@@ -48,7 +48,7 @@ class RecipeController extends Controller
         $request->validated();
 
         //check if the user has author role
-        if (!auth()->user()->hasRole('author')) {
+        if (!auth()->user()->hasRole('user')) {
             Log::channel('recipe')->error('User does not have author role');
 
             if ($request->is('api/*')) {
@@ -73,7 +73,8 @@ class RecipeController extends Controller
                 //add image to the storage
                 if ($request->has('image')) {
                     $folder = 'images/recipes/' . $recipe->id;
-                    $recipe->image = $request->file('image')->store($folder, 'public');
+                    $saved_file = $request->file('image')->store($folder, 'public');
+                    $recipe->image = substr($saved_file, 15);
                     $recipe->save();
 
                     Log::channel('recipe')->info('Recipe image added', ['recipe_image' => $recipe->image]);
@@ -110,7 +111,11 @@ class RecipeController extends Controller
      */
     public function show(Recipe $recipe)
     {
-        //
+        $recipe->load('categories', 'user', 'ingredients', 'instructions');
+
+        return view('recipes.show', [
+            'recipe' => $recipe,
+        ]);
     }
 
     /**
