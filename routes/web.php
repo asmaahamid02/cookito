@@ -15,10 +15,11 @@ Route::resource('recipes', RecipeController::class)->only(['index', 'show'])->na
     'index' => 'recipes',
     'show' => 'recipes.show',
 ])
-    //change recipe to id
-    ->parameters([
-        'recipes' => 'id',
-    ]);
+    // change recipe to id
+    // ->parameters([
+    //     'recipes' => 'id',
+    // ])
+;
 
 //search
 
@@ -44,8 +45,6 @@ Route::middleware('auth:sanctum')->group(function () {
         'edit' => 'recipes.edit',
         'update' => 'recipes.update',
         'destroy' => 'recipes.destroy',
-    ])->parameters([
-        'recipes' => 'id',
     ]);
 });
 
