@@ -1,21 +1,23 @@
 <div class="group text-gray-800 dark:text-gray-200 text-lg font-semibold capitalize">
     <div class="relative overflow-hidden rounded-xl shadow-lg">
         <div class="w-full h-60 sm:h-56 md:h-48 relative overflow-hidden">
-            <a href="{{ route('recipes', $recipe->id)}}">
-                <img src="{{ $recipe->image ? url('storage/recipes/' . $recipe->image) : asset('assets/images/placeholders/placeholder.png')}}" alt="{{$recipe->title}}" class="object-cover object-center hover:scale-125 transition-transform ease-in-out duration-300">
+            <a href="{{ route('recipes.show', ['recipe' => $recipe])}}" class="block w-full h-full">
+                <img src="{{ $recipe->image ? url('storage/images/recipes/' . $recipe->image) : asset('assets/images/placeholders/placeholder.png')}}" alt="{{$recipe->title}}" class="w-full h-full object-cover object-center hover:scale-125 transition-transform ease-in-out duration-300">
             </a>
         </div>
         <div class="p-4 bg-white dark:bg-gray-900 bg-opacity-90">
             <span class="text-gray-600 dark:text-gray-400 flex">
+                @if($recipe->average_rating > 0)
                 @foreach(range(1,$recipe->average_rating) as $rating)
                 <x-heroicon-s-star class="w-4 h-4 text-amber-600 dark:text-amber-400" />
                 @endforeach
+                @endif
                 @foreach(range(1, 5 - $recipe->average_rating) as $rating)
                 <x-heroicon-o-star class="w-4 h-4" />
                 @endforeach
             </span>
             <h4 class="mt-1 text-xl truncate group-hover:text-amber-600 dark:group-hover:text-amber-400">
-                <a href="{{ route('recipes', $recipe->id)}}">{{$recipe->title}}</a>
+                <a href="{{ route('recipes.show', ['recipe' => $recipe])}}">{{$recipe->title}}</a>
             </h4>
             <p class="mt-1 text-xs text-gray-600 dark:text-gray-400 truncate">{{ __('By') }} <span class="text-gray-700 dark:text-gray-500">{{$recipe->user->name}}</span></p>
             <p class="mt-2 text-sm text-gray-600 dark:text-gray-400 line-clamp-2">{{$recipe->description}}</p>
