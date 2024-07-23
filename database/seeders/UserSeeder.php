@@ -19,7 +19,6 @@ class UserSeeder extends Seeder
         $roles = [
             ['name' => 'admin', 'created_at' => now(), 'updated_at' => now(),],
             ['name' => 'user', 'created_at' => now(), 'updated_at' => now(),],
-            ['name' => 'author', 'created_at' => now(), 'updated_at' => now(),],
         ];
         DB::table('roles')->insert($roles);
 
@@ -30,10 +29,10 @@ class UserSeeder extends Seeder
         User::find(1)->roles()->attach(Role::where('name', 'admin')->first());
 
         $users = User::where('id', '!=', 1)->get();
-        $roles = Role::where('name', '!=', 'admin')->get();
+        $user_role = Role::where('name', 'user')->first();
 
         foreach ($users as $user) {
-            $user->roles()->attach($roles->random());
+            $user->roles()->attach($user_role);
         }
     }
 }

@@ -15,7 +15,7 @@ class RecipeSeeder extends Seeder
      */
     public function run(): void
     {
-        $users = User::whereRole('author')->get();
+        $users = User::whereRole('user')->get();
 
         $categories = Category::all();
 
