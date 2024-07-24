@@ -9,6 +9,6 @@ class DateHelper
         $hours = floor($time / 60);
         $minutes = $time % 60;
 
-        return ($hours > 0 ? $hours . 'h ' : '') . ($minutes > 0 ? $minutes . 'm' : '');
+        return ($hours > 0 ? $hours . ' hrs ' : '') . ($minutes > 0 ? $minutes . ' mins' : '');
     }
 }
