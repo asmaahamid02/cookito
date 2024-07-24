@@ -4,6 +4,7 @@ use App\Http\Controllers\{
     CategoryController,
     HomeController,
     ProfileController,
+    RatingController,
     RecipeController
 };
 use Illuminate\Support\Facades\Route;
@@ -11,15 +12,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('dashboard');
 
 Route::get('/recipes/search', [RecipeController::class, 'search'])->name('recipes.search');
-Route::resource('recipes', RecipeController::class)->only(['index', 'show'])->names([
-    'index' => 'recipes',
-    'show' => 'recipes.show',
-])
-    // change recipe to id
-    // ->parameters([
-    //     'recipes' => 'id',
-    // ])
-;
+
+// change recipe to id
+// ->parameters([
+//     'recipes' => 'id',
+// ])
 
 //search
 
@@ -46,6 +43,13 @@ Route::middleware('auth:sanctum')->group(function () {
         'update' => 'recipes.update',
         'destroy' => 'recipes.destroy',
     ]);
+
+    Route::post('rates/recipe/{recipe}', [RatingController::class, 'storeOrUpdate'])->name('rates.recipe.store');
 });
+
+Route::resource('recipes', RecipeController::class)->only(['index', 'show'])->names([
+    'index' => 'recipes',
+    'show' => 'recipes.show',
+]);
 
 require __DIR__ . '/auth.php';
