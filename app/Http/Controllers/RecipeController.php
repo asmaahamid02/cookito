@@ -111,10 +111,35 @@ class RecipeController extends Controller
      */
     public function show(Recipe $recipe)
     {
-        $recipe->load('categories', 'user', 'ingredients', 'instructions');
+        $recipe->load([
+            'categories' => function ($query) {
+                $query->orderBy('name');
+            }, 'user',
+            'ingredients', 'instructions' => function ($query) {
+                $query->orderBy('step_number');
+            }, 'ratings' => function ($query) {
+                $query->orderBy('created_at', 'desc');
+            },
+        ]);
+
+        $userRate = $recipe->userRate(auth()->user());
+
+        //get average grouped ratings such as: 5 => 20%, 4 => 30%, 3 => 30%, 2 => 10%, 1 => 10%        
+        $groupedRatings = $recipe->ratings()->select('rating', DB::raw('count(*) as total'))
+            ->groupBy('rating')
+            ->orderBy('rating', 'desc')
+            ->get()
+            ->mapWithKeys(function ($rating) use ($recipe) {
+                return [$rating->rating => [
+                    'percentage' => round(($rating->total / $recipe->ratings->count()) * 100),
+                    'count' => $rating->total
+                ]];
+            });
 
         return view('recipes.show', [
             'recipe' => $recipe,
+            'userRate' => $userRate,
+            'ratings_averages' => $groupedRatings,
         ]);
     }
 
