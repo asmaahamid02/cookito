@@ -36,7 +36,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('recipe_id');
             $table->string('name');
-            $table->integer('quantity');
+            $table->decimal('quantity');
             $table->string('unit');
             $table->foreign('recipe_id')->references('id')->on('recipes')->onDelete('cascade');
             $table->unique(['recipe_id', 'name']);
