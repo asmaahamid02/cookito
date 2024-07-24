@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Recipe>
@@ -17,14 +18,11 @@ class RecipeFactory extends Factory
      */
     public function definition(): array
     {
-        $targetDir = 'recipes';
-        $publicPath = public_path('storage/' . $targetDir);
-
-        if (!File::isDirectory($publicPath)) {
-            File::makeDirectory($publicPath, 0777, true, true);
+        if (!File::isDirectory(public_path('storage/images/recipes'))) {
+            File::makeDirectory(public_path('storage/images/recipes'), 0777, true, true);
         }
 
-        $files = File::allFiles($publicPath);
+        $files = File::files(public_path('storage/images/recipes'));
 
         return [
             'title' => fake()->sentence(),
@@ -36,7 +34,7 @@ class RecipeFactory extends Factory
             'protein' => fake()->numberBetween(5, 50),
             'carbs' => fake()->numberBetween(5, 100),
             //get random image from storage/recipes
-            'image' => $files[fake()->numberBetween(0, count($files) - 1)]->getFilename(),
+            'image' => $files[array_rand($files)]->getFilename(),
         ];
     }
 }

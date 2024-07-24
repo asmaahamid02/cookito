@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Rating;
 use App\Models\Recipe;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -20,11 +21,10 @@ class RatingSeeder extends Seeder
 
         foreach ($recipes as $recipe) {
             $users->random(rand(1, 5))->each(function ($user) use ($recipe) {
-                $rating = rand(1, 5);
-                $recipe->ratings()->create([
+                Rating::factory([
                     'user_id' => $user->id,
-                    'rating' => $rating,
-                ]);
+                    'recipe_id' => $recipe->id,
+                ])->create();
             });
         }
     }
