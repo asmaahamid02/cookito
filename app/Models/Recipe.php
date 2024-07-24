@@ -28,6 +28,10 @@ class Recipe extends Model
         'average_rating',
     ];
 
+    protected $withCount = [
+        'ratings',
+    ];
+
     ########### Searchable ###########
     public function searchableAs(): string
     {
@@ -59,11 +63,6 @@ class Recipe extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function comments()
-    {
-        return $this->hasMany(Comment::class);
-    }
-
     public function ratings()
     {
         return $this->hasMany(Rating::class);
@@ -84,6 +83,11 @@ class Recipe extends Model
         return $this->hasMany(Instruction::class);
     }
 
+    public function userRate(User $user)
+    {
+        return $this->ratings()->where('user_id', $user->id)->first();
+    }
+
     ########### Accessors ###########
     public function getPrepTimeAttribute($value)
     {
@@ -98,7 +102,7 @@ class Recipe extends Model
     public function getAverageRatingAttribute()
     {
         $average = $this->ratings()->avg('rating');
-        $average = $average ? ceil($average) : 0;
+        $average = $average ? round($average, 1) : 0;
         return $average > 5 ? 5 : $average;
     }
 
