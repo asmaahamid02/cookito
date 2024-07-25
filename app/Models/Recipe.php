@@ -24,10 +24,6 @@ class Recipe extends Model
         'user_id',
     ];
 
-    protected $appends = [
-        'average_rating',
-    ];
-
     protected $withCount = [
         'ratings',
     ];
@@ -68,6 +64,13 @@ class Recipe extends Model
         return $this->hasMany(Rating::class);
     }
 
+    public function avgRatings()
+    {
+        return $this->hasMany(Rating::class)
+            ->selectRaw('recipe_id, avg(rating) as total')
+            ->groupBy('recipe_id');
+    }
+
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'categories_recipes')->withTimestamps();
@@ -97,13 +100,6 @@ class Recipe extends Model
     public function getCookTimeAttribute($value)
     {
         return DateHelper::formatTime($value);
-    }
-
-    public function getAverageRatingAttribute()
-    {
-        $average = $this->ratings()->avg('rating');
-        $average = $average ? round($average, 1) : 0;
-        return $average > 5 ? 5 : $average;
     }
 
 

@@ -18,13 +18,19 @@ class RecipeController extends Controller
      */
     public function index(Request $request)
     {
-        $recipes = Recipe::with('categories')->with('user');
+        $recipes = Recipe::with('avgRatings')
+            ->with('categories')
+            ->with('user');
 
         if ($request->has('category')) {
             $recipes->whereCategory($request->category);
         }
 
         $recipes = $recipes->orderBy('created_at', 'desc')->paginate($this->page_limit)->withQueryString();
+
+        if ($request->is('api/*')) {
+            return response()->json($recipes);
+        }
 
         return view('recipes.index', [
             'recipes' => $recipes,
@@ -109,23 +115,30 @@ class RecipeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Recipe $recipe)
+    public function show(Request $request, Recipe $recipe)
     {
         $recipe->load([
+            'user',
+            'avgRatings',
             'categories' => function ($query) {
                 $query->orderBy('name');
-            }, 'user',
+            },
             'ingredients', 'instructions' => function ($query) {
                 $query->orderBy('step_number');
-            }, 'ratings' => function ($query) {
+            },
+            'ratings.user' => function ($query) {
                 $query->orderBy('created_at', 'desc');
             },
         ]);
 
-        $userRate = $recipe->userRate(auth()->user());
+        if (auth()->check()) {
+            $userRate = $recipe->userRate(auth()->user());
+        } else {
+            $userRate = null;
+        }
 
         //get average grouped ratings such as: 5 => 20%, 4 => 30%, 3 => 30%, 2 => 10%, 1 => 10%        
-        $groupedRatings = $recipe->ratings()->select('rating', DB::raw('count(*) as total'))
+        $groupedRatings = $recipe->ratings()->selectRaw('rating, count(*) as total')
             ->groupBy('rating')
             ->orderBy('rating', 'desc')
             ->get()
@@ -135,6 +148,14 @@ class RecipeController extends Controller
                     'count' => $rating->total
                 ]];
             });
+
+        if ($request->is('api/*')) {
+            return response()->json([
+                'recipe' => $recipe,
+                'userRate' => $userRate,
+                'ratings_averages' => $groupedRatings,
+            ]);
+        }
 
         return view('recipes.show', [
             'recipe' => $recipe,
