@@ -6,16 +6,8 @@
             </a>
         </div>
         <div class="p-4 bg-white dark:bg-gray-900 bg-opacity-90">
-            <span class="text-gray-600 dark:text-gray-400 flex">
-                @if($recipe->average_rating > 0)
-                @foreach(range(1,round($recipe->average_rating)) as $rating)
-                <x-heroicon-s-star class="w-4 h-4 text-amber-600 dark:text-amber-400" />
-                @endforeach
-                @endif
-                @foreach(range(1, 5 - round($recipe->average_rating)) as $rating)
-                <x-heroicon-o-star class="w-4 h-4" />
-                @endforeach
-            </span>
+            <x-rating-stars :total_rating="$recipe->avgRatings[0]->total" class="space-x-0" />
+
             <h4 class="mt-1 text-xl truncate group-hover:text-amber-600 dark:group-hover:text-amber-400">
                 <a href="{{ route('recipes.show', ['recipe' => $recipe->id])}}">{{$recipe->title}}</a>
             </h4>
