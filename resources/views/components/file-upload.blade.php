@@ -1,17 +1,17 @@
 @props(['name', 'accept' => '.jpeg, .png, .jpg, .svg', 'rules' => 'JPG, JPEG, PNG, SVG (MAX. 2MB)', 'containerClass', 'labelClass', 'id' => 'recipe-image'])
 
-<div class="flex items-center justify-center {{ $containerClass ?? '' }}">
-    <label for="{{$id}}" id="{{$id}}-label" class="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed relative cursor-pointer bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-500 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 {{ $labelClass ?? '' }}">
+<div class="{{ $containerClass ?? '' }}">
+    <label for="{{$id}}" id="{{$id}}-label" class="p-2 flex flex-col items-center justify-center w-full border-2 border-dashed relative cursor-pointer bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-500 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 {{ $labelClass ?? '' }}">
         <div class="flex flex-col items-center justify-center pt-5 pb-6">
             <x-heroicon-o-cloud-arrow-up class="w-6 h-6 mb-4 text-gray-500 dark:text-gray-400" />
-            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-            <p class="text-xs text-gray-500 dark:text-gray-400">JPG, JPEG, PNG, SVG (MAX. 2MB)</p>
+            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400 text-center"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400 text-center">JPG, JPEG, PNG, SVG (MAX. 2MB)</p>
         </div>
         <input id="{{$id}}" type="file" class="hidden" name="image" accept=".jpeg, .png, .jpg, .svg" />
         <img id="{{$id}}-preview" class="hidden absolute inset-0 object-contain w-full h-full rounded-md bg-inherit" />
     </label>
+    <p id="{{$id}}-data" class="hidden mt-2 text-xs text-gray-500 dark:text-gray-400 break-words"></p>
 </div>
-<p id="{{$id}}-data" class="hidden mt-2 text-xs text-gray-500 dark:text-gray-400"></p>
 
 <script>
     const id = @json($id);
