@@ -12,3 +12,5 @@ Route::get('/user', function (Request $request) {
 Route::post('/signin', [AuthenticatedSessionController::class, 'apiLogin']);
 
 Route::post('/recipes', [RecipeController::class, 'store'])->middleware('auth:sanctum');
+Route::get('/recipes', [RecipeController::class, 'index']);
+Route::get('/recipes/{recipe}', [RecipeController::class, 'show']);
